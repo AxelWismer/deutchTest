@@ -8,9 +8,9 @@ class Exam(models.Model):
         verbose_name = 'Examen'
         verbose_name_plural = 'Examenes'
 
-    title = models.CharField(u'Titulo', max_length=256)
-    solution = models.TextField(u'Solucion')
-    evaluation_text = models.TextField(u'Texto de evaluacion')
+    title = models.CharField(u'Título', max_length=256)
+    solution = models.TextField(u'Solución')
+    evaluation_text = models.TextField(u'Texto de evaluación')
 
     def __str__(self):
         return self.title
@@ -23,7 +23,7 @@ class Word(models.Model):
 
     word = models.CharField(u'Palabra', max_length=10)
     prefix = models.CharField(u'Prefijo', max_length=30)
-    solution = models.CharField(u'Solucion', max_length=10)
+    solution = models.CharField(u'Solución', max_length=10)
     exam = models.ForeignKey("Exam", on_delete=models.CASCADE, verbose_name='Examen')
 
     def __str__(self):

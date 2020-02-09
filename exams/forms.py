@@ -14,5 +14,5 @@ class ExamForm(forms.ModelForm):
         super(ExamForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.fields['solution'].widget.attrs['rows'] = 6
-        self.fields['evaluation_text'].widget.attrs['rows'] = 6
+        self.fields['solution'].widget.attrs['rows'] = 10
+        self.fields['evaluation_text'].widget.attrs['rows'] = 10
