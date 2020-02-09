@@ -4,11 +4,23 @@
 
 {% crispy form %}
 
+{% if update %}
 <!--Boton de creacion-->
 <div class="row">
     <div class="col-md-12 m-auto order-md-1 p-2 text-right">
-        <a class="btn btn-outline-dark" href="">
+        <a class="btn btn-outline-dark" href="{% url 'exams:words_create' object.pk %}">
             Crear Examen
         </a>
     </div>
 </div>
+
+  <a class="btn  btn-outline-dark " data-toggle="collapse" href="#collapse" role="button"
+     aria-expanded="false" aria-controls="collapse">
+    Palabras
+  </a>
+
+<div class="collapse" id="collapse">
+    {% include 'custom/snippets/as_list.html' with object_list=object_list fields=fields %}
+</div>
+<hr>
+{% endif %}
