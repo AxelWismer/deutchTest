@@ -16,12 +16,15 @@
 
     {% block form %}
     <!-- Formulario de cada modelo -->
-    {% with type=object|type|lower  %}
-    {% include "custom/snippets/"|add:type|add:"_form.html" with form=form %}
-    {% endwith %}
+    {% include object|form with form=form %}
     {% endblock form %}
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Registrar</button>
 </form>
 
 {% endblock app_content %}
+
+    <!-- Formulario de cada modelo -->
+    {% with type=object|type|lower  %}
+    {% include "custom/forms/"|add:type|add:"_form.html" with form=form %}
+    {% endwith %}

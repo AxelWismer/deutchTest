@@ -11,6 +11,8 @@ from django.forms.models import inlineformset_factory
 
 # La vista agrega un objeto vacio para utilizar sus metadatos en la template
 class CustomCreateView(generic.CreateView):
+    template_name = 'custom/create_form.html'
+
     def get_context_data(self, **kwargs):
         # Agrego un objeto vacio para utilizar los datos de la clase meta
         context = super(CustomCreateView, self).get_context_data()
@@ -21,6 +23,8 @@ class CustomCreateView(generic.CreateView):
 # La vista agrega un objeto vacio para utilizar sus metadatos en la template
 # y al guardar el formulario lo vuelve a mostrar con un mensaje fr rcoyp
 class CustomUpdateView(generic.UpdateView):
+    template_name = 'custom/update_form.html'
+
     def form_valid(self, form):
         self.object = form.save()
         context = {
@@ -33,6 +37,7 @@ class CustomUpdateView(generic.UpdateView):
 
 # La vista llama a la misma template al eliminar el objeto agregandole un mensaje de exito
 class CustomDeleteView(generic.DeleteView):
+    template_name = 'custom/confirm_delete.html'
     masculine_pronoun = True
 
     def get_context_data(self, **kwargs):
@@ -51,7 +56,7 @@ class CustomDeleteView(generic.DeleteView):
 
 # La vista agrega una variable para los campos del objeto que se desea mostrar en la tabla
 class CustomListView(generic.ListView):
-    template_name = 'events/list.html'
+    template_name = 'custom/list.html'
     fields = ['id']
 
     def get_context_data(self, *, object_list=None, **kwargs):

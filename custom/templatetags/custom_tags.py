@@ -4,6 +4,8 @@ from django.contrib.auth.models import Permission, User
 from django.shortcuts import get_object_or_404
 from django.db.models.aggregates import Count
 import random
+import os
+from deutchTest import settings
 
 register = template.Library()
 
@@ -89,3 +91,17 @@ def get_range(integer):
 @register.filter
 def has_perm(user, perm):
     return user.has_perm(perm)
+
+def app_name(obj):
+    return obj.__module__.split('.')[0]
+
+@register.filter
+def form(obj):
+    # Busca si existe un formulario dentro de la carpeta forms de la app correspondiente
+    form_path = settings.BASE_DIR + '/' + app_name(obj) + '/templates/' + app_name(obj) + '/forms/' +\
+                type(obj).lower() + '_form.html'
+    # Si existe devuelve el path, sino devuelve el path del formulario default
+    if os.path.exists(form_path):
+        return form_path
+    else:
+        return 'custom/snippets/default_form.html'

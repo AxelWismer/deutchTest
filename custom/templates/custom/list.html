@@ -10,7 +10,7 @@
 {% if object_list %}
 
 <!-- Pasa la lista de objetos a un formato de tabla con un boton para realizar una accion sobre cada objeto -->
-{% include 'custom/snippets/as_list.html' with object_list=object_list fields=fields button=object|products_list_delete:request.user action=object|products_list_redirect:request.user %}
+{% include 'custom/snippets/as_list.html' with object_list=object_list fields=fields button='custom/snippets/delete_button.html' action='update' %}
 
 {% else %}
 <!--Si no existen objetos se informa con un mensaje-->
@@ -22,12 +22,10 @@
 
 {% block extra_content %}
 <!--Boton de creacion-->
-{% if object|custom_list_create:request.user %}
 <div class="row">
     <div class="col-md-12 m-auto order-md-1 p-2 text-right">
         {% include 'custom/snippets/register_button.html' with object=object %}
     </div>
 </div>
-{% endif %}
 
 {% endblock extra_content %}
