@@ -14,13 +14,16 @@
     </div>
 </div>
 
-  <a class="btn  btn-outline-dark " data-toggle="collapse" href="#collapse" role="button"
+{% if object_list %}
+  <a class="btn  btn-outline-dark mb-3" data-toggle="collapse" href="#collapse" role="button"
      aria-expanded="false" aria-controls="collapse">
     Palabras
   </a>
 
 <div class="collapse" id="collapse">
+    <h5 class="ml-2">{{object_list|length}} palabras</h5>
     {% include 'custom/snippets/as_list.html' with object_list=object_list fields=fields %}
 </div>
 <hr>
+{% endif %}
 {% endif %}

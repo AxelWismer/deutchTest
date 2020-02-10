@@ -24,7 +24,7 @@ class Word(models.Model):
     word = models.CharField(u'Palabra', max_length=10)
     prefix = models.CharField(u'Prefijo', max_length=30)
     exam = models.ForeignKey("Exam", on_delete=models.CASCADE, verbose_name='Examen')
-    position = models.IntegerField(u'position')
+    position = models.IntegerField(u'Posición')
 
     def __str__(self):
         return str(self.word) + ', ' + str(self.position)

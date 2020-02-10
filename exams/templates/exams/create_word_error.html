@@ -1,0 +1,14 @@
+{% extends 'custom/base.html' %}
+
+{% block app_content %}
+
+{% load custom_tags %}
+
+  <h1 class="h3 text-center font-weight-normal">Algo salio mal :(</h1>
+  <div class="text-center">
+      <p>No se pudo generar el formulario del examen</p>
+      <p>Asegurese de que los dos textos estan cargados correctamente</p>
+      <a class="text-dark" href="{% url 'exams:exam_update' pk %}">Volver</a>
+  </div>
+
+{% endblock app_content %}

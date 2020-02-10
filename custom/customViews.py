@@ -27,11 +27,10 @@ class CustomUpdateView(generic.UpdateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        context = {
-            'success_message': 'Actualizado',
-            'form': self.get_form_class()(instance=self.object),
-            'object': self.object,
-        }
+        context = self.get_context_data()
+        context['success_message'] = 'Actualizado'
+        context['form'] = self.get_form_class()(instance=self.object)
+        context['object'] = self.object
         return render(self.request, self.template_name, context)
 
 
