@@ -92,27 +92,6 @@ def clean_word(word):
     return w
 
 
-# def create_words(questions, solution, exam):
-#     valid_words = []
-#     for word in questions:
-#         if is_word(word):
-#             valid_words.append(word)
-#
-#     count = -1
-#     for word in valid_words:
-#         # Obtengo la posicion de la palabra de la solucion
-#         count = find_word(word, solution, count + 1)
-#         solution_word = clean_word(solution[count])
-#         prefix = clean_word(word)
-#         # print("word:", word, 'clean:', clean_word(word), 'solution:', solution_word)
-#         Word(
-#             word=solution_word,
-#             prefix=prefix,
-#             exam=exam,
-#             position=count,
-#         ).save()
-
-
 def create_words(questions, solution, exam):
     # print("questions", questions)
     # print("solution", solution)
@@ -160,25 +139,6 @@ def find_word(word, questions, solution, initial_pos):
     # Si no se encontro la palabra devuelvo false para provocar un error
     print("word:----------------- ", word)
     return None
-
-
-# # Examen
-# class ExamView(generic.FormView):
-#     model = Exam
-#     form_class = QuestionWordForm
-#     template_name = APP_NAME + '/exam.html'
-#
-#     def get_exam_data(self):
-#         inlineformset_factory(self.model, self.child_model, form=self.child_form_class, extra=self.child_size, max_num=self.child_size)
-#         text = self.object.evaluation_text.split(' ')
-#         words = self.object.word_set.all()
-#         for word in words:
-#             text[word.position] = self.form_class(instance=word)
-#         return text
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ExamView, self).get_context_data(**kwargs)
-#         context['exam_text'] = get_exam_data()
 
 
 class ExamView(views.MultipleModelUpdateView):
