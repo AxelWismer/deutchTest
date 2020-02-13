@@ -1,0 +1,24 @@
+{% extends 'exams/base.html' %}
+{% block app_content %}
+{% load crispy_forms_tags %}
+{% load exams_tags %}
+{% load custom_tags %}
+
+<form class="form-signin" enctype='multipart/form-data' method="post">{% csrf_token %}
+    <h1 class="h3 text-center font-weight-normal">{{object.title}}</h1>
+    <hr>
+
+{{ formset.management_form }}
+{% for object in exam_text %}
+{% if object|is_string %}
+    {{object}}
+{% else %}
+    {{object.prefix}} {{object.form.answer}}
+{% endif %}
+
+{% endfor %}
+<br>
+    <button class="btn btn-primary btn-lg m-2" type="submit">Registrar</button>
+</form>
+
+{% endblock app_content %}

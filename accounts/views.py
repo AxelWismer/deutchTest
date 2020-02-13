@@ -1,9 +1,9 @@
-from custom import customViews
+from custom import views
 from django.contrib.auth.models import User
 from .forms import UserUpdateForm
 
 
-class AccountUpdateView(customViews.CustomUpdateView):
+class AccountUpdateView(views.CustomUpdateView):
     model = User
     form_class = UserUpdateForm
     template_name = 'accounts/update_form.html'
