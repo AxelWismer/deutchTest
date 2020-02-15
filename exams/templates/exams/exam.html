@@ -8,17 +8,45 @@
     <h1 class="h3 text-center font-weight-normal">{{object.title}}</h1>
     <hr>
 
-{{ formset.management_form }}
-{% for object in exam_text %}
-{% if object|is_string %}
+    {{ formset.management_form }}
+    {% for object in exam_text %}
+    {% if object|is_string %}
     {{object}}
-{% else %}
-    {{object.prefix}} {{object.form.answer}}
-{% endif %}
+    {% else %}
+    {{object.prefix}}
+    <!-- Cuando se trabaja con multiples formularios se debe agregar la id de cada formulario -->
+    {{object.form.id}}
+    {{object.form.answer}}
 
-{% endfor %}
-<br>
-    <button class="btn btn-primary btn-lg m-2" type="submit">Registrar</button>
+    <!-- Correccion del examen -->
+    {% if correct_answers %}
+
+    {% if object.correct_answer %}
+    <span class="badge" title="{{object.correct_answer}}">&#x274C</span>
+    {% else %}
+    <span class="badge">&#10004</span>
+    {% endif %}
+
+    {% else %}
+    &nbsp
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    <br>
+    <hr>
+
+    {% if correct_answers %}
+    <p>Puntaje: {{score}}/{{formset|length}} = {{porcent}}%</p>
+    <div class="text-center">
+        <a class="text-dark" href="{% url object|list_url %}">Volver</a>
+    </div>
+    {% else %}
+    <div class="text-right">
+        <button class="btn btn-primary btn-lg mx-2" type="submit">Guardar</button>
+    </div>
+    {% endif %}
+
+
 </form>
 
 {% endblock app_content %}

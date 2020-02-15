@@ -148,21 +148,60 @@ class ExamView(views.MultipleModelUpdateView):
     child_form_class = QuestionWordForm
     template_name = APP_NAME + '/exam.html'
 
-    def get_exam_data(self, formset):
+    def get_exam_data(self, formset, correct_answers=None):
         text = self.object.evaluation_text.replace('\\n', ' ').replace('\\r', ' ').replace('  ', ' ').split(' ')
-        print(text)
-        words = self.object.word_set.all()
+        # print(text)
+        words = self.object.word_set.all().order_by('position')
         # Incluyo cada uno de los objetos palabras remplazando al texto de la palabra incompleta
         count = -1
         for word in words:
             count += 1
             form = formset[count]
-            text[word.position] = {'form' : form, 'prefix' : word.prefix}
+            text[word.position] = {'form' : form, 'prefix' : word.prefix }
+            if correct_answers:
+                # Si existen se agregan las respuestas correctas
+                text[word.position]['correct_answer'] = correct_answers[count]
         return text
 
-    def get_context_data(self, success_msg=None, form=None, formset=None, **kwargs):
+    def get_context_data(self, success_msg=None, form=None, formset=None, correct_answers=None, score=None, **kwargs):
         context = super(ExamView, self).get_context_data(success_msg, form, formset, **kwargs)
-        formset = inlineformset_factory(self.model, self.child_model, form=self.child_form_class, extra=self.object.word_set.all().count(), max_num=self.object.word_set.all().count())(instance=self.object)
-        context['formset'] = formset
-        context['exam_text'] = self.get_exam_data(formset)
+        if formset:
+            context['formset'] = formset
+        else:
+            formset = inlineformset_factory(self.model, self.child_model, form=self.child_form_class, extra=self.object.word_set.all().count(), max_num=self.object.word_set.all().count())(instance=self.object)
+            context['formset'] = formset
+        if correct_answers: context['correct_answers'] = True
+        if score is not None:
+            context['score'] = score
+            context['porcent'] = round((score / len(formset))*100, 2)
+        context['exam_text'] = self.get_exam_data(formset, correct_answers)
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        data = self.get_context_data()
+        form = data['form']
+        formset = data['formset']
+        formset = inlineformset_factory(self.model, self.child_model, form=self.child_form_class,
+                                        extra=self.object.word_set.all().count(),
+                                        max_num=self.object.word_set.all().count())(self.request.POST, instance=self.object)
+        if formset.is_valid():
+          return self.form_valid(form, formset)
+        else:
+            return self.form_invalid(form, formset)
+
+    def form_valid(self, form, formset):
+        words = self.object.word_set.all().order_by('position')
+        score = 0
+        correct_answers = []
+        for pos in range(len(formset)):
+            # Marco los casilleros como solo lectura
+            formset[pos].fields['answer'].widget.attrs['readonly'] = True
+            # if words[pos].correct(self.request.POST.get('word_set-' + str(pos) +'-answer')):
+            if words[pos].correct(formset[pos].cleaned_data['answer']):
+                score += 1
+                correct_answers.append(None)
+            else:
+                correct_answers.append(words[pos].word)
+        return render(self.request, self.template_name, self.get_context_data(formset=formset, correct_answers=correct_answers, score=score))
+

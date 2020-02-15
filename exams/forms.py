@@ -20,7 +20,7 @@ class ExamForm(forms.ModelForm):
 
 
 class QuestionWordForm(forms.ModelForm):
-    answer = forms.CharField(max_length=15)
+    answer = forms.CharField(max_length=15, required=False)
 
     class Meta:
         model = Word
@@ -30,5 +30,8 @@ class QuestionWordForm(forms.ModelForm):
         super(QuestionWordForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.fields['answer'].widget.attrs['size'] = 6
+        self.fields['answer'].widget.attrs['color'] = "red"
+
+        # self.fields['answer'].required = False
         self.helper.form_show_labels = False
         self.helper.form_tag = False

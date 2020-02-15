@@ -28,3 +28,9 @@ class Word(models.Model):
 
     def __str__(self):
         return str(self.word) + ', ' + str(self.position)
+
+    def answer(self):
+        return self.word[len(str(self.prefix)):]
+
+    def correct(self, answer):
+        return answer == self.answer()
