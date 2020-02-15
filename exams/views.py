@@ -13,11 +13,18 @@ from .forms import ExamForm, QuestionWordForm
 # Models
 from .models import Exam, Word
 
+# Decoratos
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from .decorators import staff_user_required
+
+
 # Create your views here.
 APP_NAME = 'exams'
 APP_LABEL = 'exams:'
 
 
+@method_decorator(login_required, name='dispatch')
 class ExamListView(views.CustomListView):
     model = Exam
     fields = ['title']
@@ -25,6 +32,8 @@ class ExamListView(views.CustomListView):
     def get_queryset(self):
         return self.model.objects.all().order_by('title')
 
+
+@method_decorator(staff_user_required, name='dispatch')
 class ExamCreateView(views.CustomCreateView):
     model = Exam
     form_class = ExamForm
@@ -35,17 +44,27 @@ class ExamCreateView(views.CustomCreateView):
         return redirect(APP_LABEL + 'words_create', pk=self.object.pk)
 
 
-class ExamUpdateView(views.CustomUpdateView):
+@method_decorator(staff_user_required, name='dispatch')
+class ExamUpdateView(generic.UpdateView):
     model = Exam
     form_class = ExamForm
+    success_url = reverse_lazy(APP_LABEL  + 'exam_list')
+    template_name = 'custom/update_form.html'
 
     def get_context_data(self, **kwargs):
         context = super(ExamUpdateView, self).get_context_data(**kwargs)
         context['object_list'] = self.object.word_set.all().order_by('position')
         context['fields'] = ['position', 'prefix', 'word']
         context['update'] = 'true'
+        context['object'] = self.object
         return context
 
+    def form_valid(self, form):
+        super(ExamUpdateView, self).form_valid(form)
+        return createExamWords(self.request, pk=self.object.pk)
+
+
+@method_decorator(staff_user_required, name='dispatch')
 class ExamDeleteView(views.CustomDeleteView):
     model = Exam
 
@@ -141,6 +160,7 @@ def find_word(word, questions, solution, initial_pos):
     return None
 
 
+@method_decorator(login_required, name='dispatch')
 class ExamView(views.MultipleModelUpdateView):
     model = Exam
     child_model = Word

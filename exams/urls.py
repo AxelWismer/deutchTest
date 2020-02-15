@@ -11,6 +11,6 @@ urlpatterns = [
     path('exam/delete/<int:pk>', ExamDeleteView.as_view(), name='exam_delete'),
     path('words/create/<int:pk>', createExamWords, name='words_create'),
 
-    path('exam/<int:pk>', ExamView.as_view(), name='exam'),
+    path('exam/<int:pk>', ExamView.as_view(), name='exam_detail'),
 
 ]

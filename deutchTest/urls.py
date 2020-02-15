@@ -18,13 +18,13 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from django.conf import settings
 from django.views import generic
-
+from exams.views import ExamListView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', generic.TemplateView.as_view(template_name='exams/index.html'), name='index'),
-    path('exams/', include('exams.urls')),
-    path('accounts/', include('accounts.urls')),
+                  path('admin/', admin.site.urls),
+                  path('', generic.RedirectView.as_view(url='exams/exam/'), name='index'),
+                  path('exams/', include('exams.urls')),
+                  path('accounts/', include('accounts.urls')),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -7,7 +7,7 @@
 <form class="form-signin" enctype='multipart/form-data' method="post">{% csrf_token %}
     <h1 class="h3 text-center font-weight-normal">{{object.title}}</h1>
     <hr>
-
+<p>
     {{ formset.management_form }}
     {% for object in exam_text %}
     {% if object|is_string %}
@@ -32,9 +32,9 @@
     {% endif %}
     {% endif %}
     {% endfor %}
-    <br>
-    <hr>
+</p>
 
+    <hr>
     {% if correct_answers %}
     <p>Puntaje: {{score}}/{{formset|length}} = {{porcent}}%</p>
     <div class="text-center">

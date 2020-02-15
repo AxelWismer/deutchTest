@@ -5,15 +5,6 @@
 {% crispy form %}
 
 {% if update %}
-<!--Boton de creacion-->
-<div class="row">
-    <div class="col-md-12 m-auto order-md-1 p-2 text-right">
-        <a class="btn btn-outline-dark" href="{% url 'exams:words_create' object.pk %}">
-            Crear Examen
-        </a>
-    </div>
-</div>
-
 {% if object_list %}
   <a class="btn  btn-outline-dark mb-3" data-toggle="collapse" href="#collapse" role="button"
      aria-expanded="false" aria-controls="collapse">

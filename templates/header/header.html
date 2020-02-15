@@ -4,10 +4,10 @@
 	{% include 'header/hello_user.html' %}
 
 	<nav class="my-2 my-md-0 mr-4">
-		<a class="p-2 text-dark" href="{% url 'index' %}">Inicio</a>
 		<!--Opciones de un usuario staff-->
-		{% include 'header/staff_header.html' %}
+		<a class="p-2 text-dark" href="{% url 'exams:exam_list'%}">Examenes</a>
 		{% include 'header/login_header.html' %}
+		{% include 'header/account_header.html' %}
 
 	</nav>
 </div>

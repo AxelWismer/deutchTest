@@ -128,3 +128,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR +'/media/'
+
+# Se modifica las url que traen por defecto las auth_view
+# para que apunten a la pagina principal
+LOGIN_REDIRECT_URL = LOGOUT_REDIRECT_URL = 'index'
+
