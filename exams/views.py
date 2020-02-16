@@ -69,6 +69,7 @@ class ExamDeleteView(views.CustomDeleteView):
     model = Exam
 
 
+@staff_user_required
 def createExamWords(request, pk):
     exam = get_object_or_404(Exam, pk=pk)
     exam.word_set.all().delete()
