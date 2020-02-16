@@ -11,6 +11,9 @@ class Exam(models.Model):
     title = models.CharField(u'Título', max_length=256)
     solution = models.TextField(u'Solución')
     evaluation_text = models.TextField(u'Texto de evaluación')
+    LEVEL_CHOICES = (('A1', 'A1'), ('A2', 'A2'), ('B1', 'B1'))
+    level = models.CharField(u'Nivel', max_length=2, choices=LEVEL_CHOICES ,default=LEVEL_CHOICES[0])
+    valid = models.BooleanField(u'Examen valido', default=True)
 
     def __str__(self):
         return self.title

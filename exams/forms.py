@@ -9,7 +9,7 @@ from .models import Exam, Word
 class ExamForm(forms.ModelForm):
     class Meta:
         model = Exam
-        fields = '__all__'
+        fields = ('title', 'solution', 'evaluation_text', 'level')
 
     def __init__(self, *args, **kwargs):
         super(ExamForm, self).__init__(*args, **kwargs)

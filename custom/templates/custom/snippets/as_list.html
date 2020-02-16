@@ -25,10 +25,10 @@
                 <!-- Link para realizar un accion sobre el objeto -->
                 {% if action %}
                 <a class="text-dark" href="{% url object|get_redirect:action obj.pk %}">
-                    {{obj|field:field }}
+                    {{obj|field:field|safe}}
                 </a>
                 {% else %}
-                <h6 class="text-dark" >{{obj|field:field}}</h6>
+                <h6 class="text-dark" >{{obj|field:field|safe}} </h6>
                 {% endif %}
             </td>
             {% endfor %}

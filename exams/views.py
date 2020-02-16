@@ -30,7 +30,11 @@ class ExamListView(views.CustomListView):
     fields = ['title']
 
     def get_queryset(self):
-        return self.model.objects.all().order_by('title')
+        if self.request.user.is_staff:
+            self.fields = ['title', 'valid']
+            return self.model.objects.all().order_by('title')
+        else:
+            return self.model.objects.filter(valid=True)
 
 
 @method_decorator(staff_user_required, name='dispatch')
@@ -78,11 +82,14 @@ def createExamWords(request, pk):
         create_words(exam.evaluation_text.replace('\\n', ' ').replace('\\r', ' ').split(), exam.solution.replace('\\n', ' ').replace('\\r', ' ').split(), exam)
     except Exception as e:
         print("Error:", str(e))
-        # Se eliminan las palabras creadas hasta el momento
-        exam.word_set.all().delete()
+        # Se marca el examen como invalido para que se lo corrija
+        exam.valid = False
+        exam.save()
         # Se muestra una pantalla de error
         return render(request, 'exams/create_word_error.html', context={'pk': pk})
-
+    # Se marca el examen como valido para que sea visible por los estudiantes
+    exam.valid = True
+    exam.save()
     return redirect(APP_LABEL +  'exam_update', pk=pk)
 
 
@@ -153,11 +160,11 @@ def find_word(word, questions, solution, initial_pos):
             if prefix == sol_word[0:len(prefix)]:
                 # Compruebo que las palabras alrededor de la palabra incompleta coinciden con las palabras
                 # alrededor de la palabras de la solucion permitiendo un error de uno de los lados
-                if questions[word.position - 2 : word.position - 1] == solution[pos - 2 : pos - 1] \
-                        or questions[word.position + 1 : word.position + 2] == solution[pos + 1 : pos + 2]:
+                if questions[word.position - 1] == solution[pos - 1] \
+                        or questions[word.position + 1] == solution[pos + 1]:
                     return pos
     # Si no se encontro la palabra devuelvo false para provocar un error
-    print("word:----------------- ", word)
+    print("word:----------------- ", prefix)
     return None
 
 

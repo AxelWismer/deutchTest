@@ -38,7 +38,12 @@ def field(obj, field_name):
                 list.append(str(i))
             return ', '.join(list)
         else:
-            return field
+            if field is True:
+                return "&#10004"
+            elif field is False:
+                return "&#x274C"
+            else:
+                return field
     else:
         return ''
 
