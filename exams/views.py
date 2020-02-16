@@ -27,14 +27,14 @@ APP_LABEL = 'exams:'
 @method_decorator(login_required, name='dispatch')
 class ExamListView(views.CustomListView):
     model = Exam
-    fields = ['title']
+    fields = ['title', 'level']
 
     def get_queryset(self):
         if self.request.user.is_staff:
-            self.fields = ['title', 'valid']
-            return self.model.objects.all().order_by('title')
+            self.fields = ['title', 'level', 'valid']
+            return self.model.objects.all().order_by('level').order_by('title')
         else:
-            return self.model.objects.filter(valid=True)
+            return self.model.objects.filter(valid=True).order_by('level').order_by('title')
 
 
 @method_decorator(staff_user_required, name='dispatch')
