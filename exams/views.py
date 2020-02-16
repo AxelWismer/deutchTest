@@ -32,9 +32,9 @@ class ExamListView(views.CustomListView):
     def get_queryset(self):
         if self.request.user.is_staff:
             self.fields = ['title', 'level', 'valid']
-            return self.model.objects.all().order_by('level').order_by('title')
+            return self.model.objects.all().order_by('level', 'title')
         else:
-            return self.model.objects.filter(valid=True).order_by('level').order_by('title')
+            return self.model.objects.filter(valid=True).order_by('level', 'title')
 
 
 @method_decorator(staff_user_required, name='dispatch')
